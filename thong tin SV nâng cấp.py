@@ -71,7 +71,40 @@ def search_class(data,class_search):
         return f"Không tìm thấy thông tin cho sinh viên có lop {class_search}."
     else:
         return f"Sinh viên trong lớp {class_search} là {str_std}."
-
+def search_low(data,subject_name):
+    listname=[]
+    if data.size == 0:
+        return "Dữ liệu không được tải."
+    student_data = data[data[:, 2] == subject_name]
+    if student_data.size == 0:
+        return f"Không tìm thấy thông tin cho sinh viên trong mon {subject_name}."
+    else:
+        maxpoint=11
+        for row in student_data:
+            if float(row[3]) <maxpoint:
+                maxpoint=float(row[3])
+        for row in student_data:
+            if float(row[3]) ==maxpoint:
+                listname.append(row)
+        return "\n".join([f"ID: {r[0]}, Tên: {r[1]}, Điểm: {r[3]},Lớp: {r[4]}" for r in listname])
+        
+def search_high(data,subject_name):
+    listname=[]
+    if data.size == 0:
+        return "Dữ liệu không được tải."
+    student_data = data[data[:, 2] == subject_name]
+    if student_data.size == 0:
+        return f"Không tìm thấy thông tin cho sinh viên trong mon {subject_name}."
+    else:
+        maxpoint=0
+        for row in student_data:
+            if float(row[3]) >maxpoint:
+                maxpoint=float(row[3])
+        for row in student_data:
+            if float(row[3]) ==maxpoint:
+                listname.append(row)
+        return "\n".join([f"ID: {r[0]}, Tên: {r[1]}, Điểm: {r[3]},Lớp: {r[4]}" for r in listname])
+            
 
 def search_action():
     choice = choice_var.get()
@@ -87,6 +120,10 @@ def search_action():
         result = calculate_average(data, student_id)
     elif choice == '4':
         result = search_class(data,class_search)
+    elif choice == '5':
+        result = search_low(data,subject_name)
+    elif choice == '6':
+        result = search_high(data,subject_name)
     else:
         result = "Lựa chọn không hợp lệ."
 
@@ -112,6 +149,8 @@ def main():
     tk.Radiobutton(root, text="Tìm kiếm điểm môn học", variable=choice_var, value='2').pack(anchor='w')
     tk.Radiobutton(root, text="Tính TBC điểm của sinh viên", variable=choice_var, value='3').pack(anchor='w')
     tk.Radiobutton(root, text="Tìm kiếm theo lớp", variable=choice_var, value='4').pack(anchor='w')
+    tk.Radiobutton(root, text="Tìm kiếm sinh viên có điểm thấp nhất của môn học", variable=choice_var, value='5').pack(anchor='w')
+    tk.Radiobutton(root, text="Tìm kiếm sinh viên có điểm cao nhất của môn học", variable=choice_var, value='6').pack(anchor='w')
     tk.Label(root, text="ID sinh viên:").pack(pady=5)
     global id_entry
     id_entry = tk.Entry(root)
