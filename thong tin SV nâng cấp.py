@@ -1,5 +1,6 @@
 import numpy as np
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox, simpledialog
 
 
@@ -25,6 +26,15 @@ def search_student(data, student_id):
     else:
         return "\n".join([", ".join(row) for row in student_data])
 
+def populate_table(tree, data):
+    """Populate the Treeview with student data."""
+    # Clear any previous rows
+    for row in tree.get_children():
+        tree.delete(row)
+
+    # Insert new rows from the data
+    for row in data:
+        tree.insert('', 'end', values=(row[0], row[1], row[2], row[3], row[4]))
 
 def search_subject(data, subject_name):
     """Search for grades of a specific subject."""
@@ -138,6 +148,17 @@ def main():
     # Tạo cửa sổ chính
     root = tk.Tk()
     root.title("Tìm kiếm thông tin sinh viên")
+    # Thêm bảng hiển thị danh sách sinh viên
+    tree = ttk.Treeview(root, columns=("ID", "Tên", "Môn học", "Điểm", "Lớp"), show='headings')
+    tree.heading("ID", text="ID Sinh viên")
+    tree.heading("Tên", text="Tên Sinh viên")
+    tree.heading("Môn học", text="Môn học")
+    tree.heading("Điểm", text="Điểm")
+    tree.heading("Lớp", text="Lớp")
+    tree.pack(pady=10, fill='x')
+
+    # Nạp dữ liệu vào bảng
+    populate_table(tree, data)
 
     # Thêm các widget
     tk.Label(root, text="Chọn hành động:").pack(pady=5)
