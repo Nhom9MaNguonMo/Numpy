@@ -37,7 +37,7 @@ def calculate_average(data, student_id):
         print(f"Trung bình cộng điểm của sinh viên có ID {student_id} là {average_grade:.2f}.")
 
 def main():
-    file_path = 'data.csv'  # Đặt đường dẫn đến file dữ liệu của bạn
+    file_path = 'New folder/data.csv'  # Đặt đường dẫn đến file dữ liệu của bạn
     data = load_data('New folder\data.csv')
 
     while True:

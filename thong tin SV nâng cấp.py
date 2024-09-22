@@ -36,13 +36,16 @@ def populate_table(tree, data):
     for row in data:
         tree.insert('', 'end', values=(row[0], row[1], row[2], row[3], row[4]))
 
-def search_subject(data, subject_name):
+def search_subject(data, subject_name,student_id=None):
     """Search for grades of a specific subject."""
     if data.size == 0:
         return "Dữ liệu không được tải."
 
     subject_data = data[data[:, 2] == subject_name]
     print(subject_data)
+    if student_id:
+        subject_data = subject_data[subject_data[:, 0] == student_id]
+
     if subject_data.size == 0:
         return f"Không tìm thấy điểm cho môn học {subject_name}."
     else:
@@ -125,7 +128,10 @@ def search_action():
     if choice == '1':  # Tìm kiếm thông tin sinh viên
         result = search_student(data, student_id)
     elif choice == '2':  # Tìm kiếm điểm môn học
-        result = search_subject(data, subject_name)
+        if not student_id:  # Kiểm tra nếu không có ID sinh viên
+            messagebox.showwarning("Cảnh báo", "Vui lòng nhập ID sinh viên để tìm kiếm điểm môn học.")
+            return
+        result = search_subject(data, subject_name, student_id)
     elif choice == '3':  # Tính TBC điểm của sinh viên
         result = calculate_average(data, student_id)
     elif choice == '4':
